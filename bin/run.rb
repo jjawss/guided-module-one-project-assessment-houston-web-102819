@@ -29,9 +29,18 @@ def check_or_create(name)
   end
 end
 
+# def check_or_create(name)
+#     user = User.find_by({ name: name })
+#     if user == nil
+#       User.create(name: "#{name}")
+#     else
+#       user = name
+#   end
+#   return user
+# end
 
-
-
+# prompt = TTY::Prompt.new 
+# prompt.select("Hello, #{check_or_create}, what would you like to do?", ["Select a movie", "User options"])
 
 #-------------------------------------------------------
 
@@ -39,10 +48,11 @@ end
 puts "Welcome to Movie App!"
 
 puts "What is your name?"
-current_name = gets.chomp
+current_user = gets.chomp
 
 #Frame 2
-user_choice = check_or_create(current_name)
+user_choice = check_or_create(current_user)
+
 
 movie_titles = Movie.all.map do |movie|
   movie.title
@@ -64,9 +74,34 @@ end
 users_location = prompt.select("Select a location", location_names)
 
 
+movie_object = Movie.where(title: users_movie)
+location_object = Location.where(name: users_location)
+tickets_for_movie_location_object = Ticket.where(movie: movie_object, location: location_object)
 
-p movie_object = Movie.where(title: users_movie)
-p location_object = Location.where(name: users_location)
-pp tickets_for_movie_object = Ticket.where(movie: movie_object, location: location_object)
+ticket_labels = {}
+tickets_for_movie_location_object.each do |ticket|
+  ticket_labels["Time: #{ticket.time} Price: $#{ticket.price}"] = ticket
+end
+
+
+users_ticket = prompt.select("Select a time", ticket_labels)
+
+puts "You're going to #{users_ticket.location.name} to see #{users_ticket.movie.title} at #{users_ticket.time}."
+
+
+
+
+
+
+
+# user_ticket.user = user
+
+# current_user_object = User.where(name: current_user)
+
+# users_ticket.user = current_user_object
+
+
+
+
 
 
