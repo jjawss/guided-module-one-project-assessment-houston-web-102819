@@ -3,7 +3,7 @@ Movie.destroy_all
 Ticket.destroy_all
 User.destroy_all
 
-charlie_angles = Movie.create(title: "Charlie's Angels", genre: "Action", rating: "PG-13")
+charlie_angels = Movie.create(title: "Charlie's Angels", genre: "Action", rating: "PG-13")
 ford_v_ferrari = Movie.create(title: "Ford v Ferrari", genre: "Drama", rating: "PG-13")
 good_liar = Movie.create(title: "The Good Liar", genre: "Drama", rating: "R")
 waves = Movie.create(title: "Waves", genre: "Romance", rating: "R")
@@ -12,7 +12,7 @@ terminator_dark_fate = Movie.create(title: "Terminator: Dark Fate", genre: "Sci-
 joker = Movie.create(title: "Joker", genre: "Thriller", rating: "R")
 maleficent = Movie.create(title: "Maleficent: Mistress of Evil", genre: "Family", rating: "PG")
 addams_family = Movie.create(title: "The Addams Family", genre: "Comedy", rating: "PG")
-artic_dogs = Movie.create(title: "Artic Dogs", genre: "Comedy", rating: "PG")
+arctic_dogs = Movie.create(title: "Arctic Dogs", genre: "Comedy", rating: "PG")
 
 regal_edwards = Location.create(name: "Regal Edwards")  #10
 amc_studio_30 = Location.create(name: "AMC Studio 30")  #11
@@ -21,7 +21,7 @@ studio_movie_grill = Location.create(name: "Studio Movie Grill")  #12.50
 ipic = Location.create(name: "IPIC")  #13.00
 rooftop_cinema = Location.create(name: "Rooftop Cinema Club") #13.50
 
-Ticket.create(price: 10.00, time: "1:30 PM", movie: charlie_angles, location: regal_edwards)
+Ticket.create(price: 10.00, time: "1:30 PM", movie: charlie_angels, location: regal_edwards)
 Ticket.create(price: 11.00, time: "1:30 PM", movie: charlie_angels, location: amc_studio_30)
 Ticket.create(price: 12.00, time: "1:40 PM", movie: charlie_angels, location: alamo)
 Ticket.create(price: 12.50, time: "1:45 PM", movie: charlie_angels, location: studio_movie_grill)
@@ -40,21 +40,21 @@ Ticket.create(price: 11.00, time: "1:30 PM", movie: good_liar, location: amc_stu
 Ticket.create(price: 12.00, time: "1:40 PM", movie: good_liar, location: alamo)
 Ticket.create(price: 12.50, time: "1:45 PM", movie: good_liar, location: studio_movie_grill)
 Ticket.create(price: 13.00, time: "1:55 PM", movie: good_liar, location: ipic)
-Ticket.create(price: 11.00, time: "1:55 PM", movie: good_liar, location: rooftop_cinma)
+Ticket.create(price: 11.00, time: "1:55 PM", movie: good_liar, location: rooftop_cinema)
 
 Ticket.create(price: 10.00, time: "1:30 PM", movie: waves, location: regal_edwards)
 Ticket.create(price: 11.00, time: "1:30 PM", movie: waves, location: amc_studio_30)
 Ticket.create(price: 12.00, time: "1:40 PM", movie: waves, location: alamo)
 Ticket.create(price: 12.50, time: "1:45 PM", movie: waves, location: studio_movie_grill)
 Ticket.create(price: 13.00, time: "1:55 PM", movie: waves, location: ipic)
-Ticket.create(price: 11.00, time: "1:55 PM", movie: waves, location: rooftop_cinma)
+Ticket.create(price: 11.00, time: "1:55 PM", movie: waves, location: rooftop_cinema)
 
 Ticket.create(price: 10.00, time: "1:30 PM", movie: all_rise, location: regal_edwards)
 Ticket.create(price: 11.00, time: "1:30 PM", movie: all_rise, location: amc_studio_30)
 Ticket.create(price: 12.00, time: "1:40 PM", movie: all_rise, location: alamo)
 Ticket.create(price: 12.50, time: "1:45 PM", movie: all_rise, location: studio_movie_grill)
 Ticket.create(price: 13.00, time: "1:55 PM", movie: all_rise, location: ipic)
-Ticket.create(price: 11.00, time: "1:55 PM", movie: all_rise, location: rooftop_cinma)
+Ticket.create(price: 11.00, time: "1:55 PM", movie: all_rise, location: rooftop_cinema)
 
 Ticket.create(price: 10.00, time: "1:30 PM", movie: terminator_dark_fate, location: regal_edwards)
 Ticket.create(price: 11.00, time: "1:30 PM", movie: terminator_dark_fate, location: amc_studio_30)
@@ -93,7 +93,7 @@ Ticket.create(price: 11.00, time: "1:55 PM", movie: arctic_dogs, location: rooft
 
 #####################################################################################################
 
-Ticket.create(price: 10.00, time: "3:30 PM", movie: charlie_angles, location: regal_edwards)
+Ticket.create(price: 10.00, time: "3:30 PM", movie: charlie_angels, location: regal_edwards)
 Ticket.create(price: 11.00, time: "3:30 PM", movie: charlie_angels, location: amc_studio_30)
 Ticket.create(price: 12.00, time: "3:40 PM", movie: charlie_angels, location: alamo)
 Ticket.create(price: 12.50, time: "3:45 PM", movie: charlie_angels, location: studio_movie_grill)
@@ -165,7 +165,7 @@ Ticket.create(price: 11.00, time: "3:55 PM", movie: arctic_dogs, location: rooft
 
 #################################################################################################
 
-Ticket.create(price: 10.00, time: "5:30 PM", movie: charlie_angles, location: regal_edwards)
+Ticket.create(price: 10.00, time: "5:30 PM", movie: charlie_angels, location: regal_edwards)
 Ticket.create(price: 11.00, time: "5:30 PM", movie: charlie_angels, location: amc_studio_30)
 Ticket.create(price: 12.00, time: "5:40 PM", movie: charlie_angels, location: alamo)
 Ticket.create(price: 12.50, time: "5:45 PM", movie: charlie_angels, location: studio_movie_grill)
@@ -237,7 +237,7 @@ Ticket.create(price: 11.00, time: "5:55 PM", movie: arctic_dogs, location: rooft
 
 ################################################################################################
 
-Ticket.create(price: 10.00, time: "7:30 PM", movie: charlie_angles, location: regal_edwards)
+Ticket.create(price: 10.00, time: "7:30 PM", movie: charlie_angels, location: regal_edwards)
 Ticket.create(price: 11.00, time: "7:30 PM", movie: charlie_angels, location: amc_studio_30)
 Ticket.create(price: 12.00, time: "7:40 PM", movie: charlie_angels, location: alamo)
 Ticket.create(price: 12.50, time: "7:45 PM", movie: charlie_angels, location: studio_movie_grill)
@@ -309,7 +309,7 @@ Ticket.create(price: 11.00, time: "7:55 PM", movie: arctic_dogs, location: rooft
 
 #################################################################################################
 
-Ticket.create(price: 10.00, time: "9:30 PM", movie: charlie_angles, location: regal_edwards)
+Ticket.create(price: 10.00, time: "9:30 PM", movie: charlie_angels, location: regal_edwards)
 Ticket.create(price: 11.00, time: "9:30 PM", movie: charlie_angels, location: amc_studio_30)
 Ticket.create(price: 12.00, time: "9:40 PM", movie: charlie_angels, location: alamo)
 Ticket.create(price: 12.50, time: "9:45 PM", movie: charlie_angels, location: studio_movie_grill)

@@ -20,3 +20,4 @@ gem 'sqlite3'
 gem 'pry'
 gem 'tty-prompt'
 gem 'artii'
+gem "rspec", "~> 3.9"
