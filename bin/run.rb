@@ -7,22 +7,6 @@ class MovieApp
 
   prompt = TTY::Prompt.new
 
-  # def check_or_create(name)
-  #   user = User.find_by({ name: name })
-  #   if user == nil
-  #     return User.create(name: "#{name}")
-  #   else
-  #     return puts "Hello #{name}, what would you like to do?"
-  #   end
-
-    # User.all.each do |user_name|
-    #     if user_name.name == name
-    #     return puts "Hello #{name}, what would you like to do?"
-    #     end
-    #   end
-    #   return User.create(name: "#{name}")
-    # end
-
   def self.check_or_create(name)
     prompt = TTY::Prompt.new
     @user = User.find_by({ name: name })
@@ -34,7 +18,7 @@ class MovieApp
     end
   end
 
-  #-------------------------------------------------------
+  #-----------------------------------------------------
 
   #Frame 1
   puts "Welcome to Movie App!"
@@ -44,6 +28,26 @@ class MovieApp
 
   #Frame 2
   user_choice = check_or_create(current_user)
+
+
+#=============================================================
+
+  def self.favorite_genre
+    tickets_user_purchased = Ticket.where(user_id: @user)
+
+    genre_purchased_tickets = tickets_user_purchased.map do |ticket|
+      ticket.movie.genre
+    end
+
+    x = genre_purchased_tickets.max_by {|genre| genre_purchased_tickets.count(genre)}
+    "Your favorite genre is: #{x}."
+  end
+
+
+
+    
+#=================================================================
+
 
 
   movie_titles = Movie.all.map do |movie|
@@ -97,15 +101,6 @@ class MovieApp
 end
 
 
-
-
-
-
-
-
-# current_user_object = User.where(name: current_user)
-
-# users_ticket.user = current_user_object
 
 
 
