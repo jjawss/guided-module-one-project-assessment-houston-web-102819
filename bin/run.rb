@@ -31,7 +31,6 @@ class MovieApp
 
 
 #=============================================================
-
   def self.favorite_genre
     tickets_user_purchased = Ticket.where(user_id: @user)
 
@@ -42,11 +41,20 @@ class MovieApp
     x = genre_purchased_tickets.max_by {|genre| genre_purchased_tickets.count(genre)}
     "Your favorite genre is: #{x}."
   end
+#==============================================================
 
-
-
+  def self.movies_history
+    tickets_user_purchased = Ticket.where(user_id: @user)
     
-#=================================================================
+    title_purchased_tickets = tickets_user_purchased.map do |ticket|
+      ticket.movie.title
+    end
+    puts "List of movies you've seen:"
+    puts title_purchased_tickets.uniq
+
+  end
+
+#=============================================================
 
 
 
