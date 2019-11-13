@@ -30,7 +30,7 @@ class MovieApp
   user_choice = check_or_create(current_user)
 
 
-#=============================================================
+#==========================================================
   def self.favorite_genre
     tickets_user_purchased = Ticket.where(user_id: @user)
 
@@ -41,7 +41,7 @@ class MovieApp
     x = genre_purchased_tickets.max_by {|genre| genre_purchased_tickets.count(genre)}
     "Your favorite genre is: #{x}."
   end
-#==============================================================
+#===========================================================
 
   def self.movies_history
     tickets_user_purchased = Ticket.where(user_id: @user)
@@ -54,9 +54,20 @@ class MovieApp
 
   end
 
-#=============================================================
+#=========================================================
 
+  def self.most_visited_theater
+    tickets_user_purchased = Ticket.where(user_id: @user)
 
+    location_purchased_tickets = tickets_user_purchased.map do |ticket|
+      ticket.location.name
+    end
+
+    x = location_purchased_tickets.max_by {|location| location_purchased_tickets.count(location)}
+    "Your most visited theater is: #{x}"
+  end
+
+#=========================================================
 
   movie_titles = Movie.all.map do |movie|
     movie.title
