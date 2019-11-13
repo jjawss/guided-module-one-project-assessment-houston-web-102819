@@ -3,7 +3,7 @@ require_relative '../config/environment'
 
 class MovieApp
 
-  attr_accessor :prompt, :user, :users_movie, :users_option
+  attr_accessor :prompt, :user, :users_movie, :users_option, :users_choice
   
   @prompt = TTY::Prompt.new
 
@@ -22,13 +22,37 @@ class MovieApp
     end
   end
 
+  def self.main_menu
+    response = prompt.select("Hello, #{name}, what would you like to do?", ["Select a movie", "User options"])
+    if response == "Select a movie"
+      list_movies
+    else
+      list_options
+    end
+  end
+
+  def self.list_movies
+    #logic for listing and selecting movies
+    if response != "back"
+      #do stuff
+    else
+      main_menu
+    end
+  end
+  end
+
   def self.welcome_frame
     puts "Welcome to Movie App!"
 
     puts "What is your name?"
     current_user = gets.chomp
 
-    @user_choice = check_or_create(current_user)
+    @users_choice = check_or_create(current_user)
+  end
+
+  def self.main_menu
+    @users_choice = nil
+    @users_choice = @prompt.select("Welcome back #{@user.name}! What would you like to do?", ["Select a movie", "User options"])
   end
 
   def self.movie_titles
@@ -39,7 +63,21 @@ class MovieApp
 
   def self.movie_menu
     prompt = TTY::Prompt.new
-    @users_movie = prompt.select("What movie would you like to see?", movie_titles)
+    users_movie_menu_selection = nil
+    users_movie_menu_selection = prompt.select("What movie would you like to see?", [movie_titles, "back"])
+    
+    if users_movie_menu_selection != "back"
+      @users_movie = users_movie_menu_selection
+    else
+      main_menu
+
+    #if @users_movie == "back"
+      #main_menu
+    end
+
+
+
+
   end
   
   def self.options_menu
@@ -59,7 +97,7 @@ class MovieApp
 ########################################################################################
   welcome_frame
 
-  if @user_choice == "Select a movie"
+  if @users_choice == "Select a movie"
     movie_menu
   else 
     options_menu
