@@ -30,7 +30,7 @@ class MovieApp
       @user = User.create(name: "#{name}")
       return prompt.select("Hello, #{name}, what would you like to do?", ["Select a movie", "User options"])
     else
-      return prompt.select("Hello, #{name}, what would you like to do?", ["Select a movie", "User options"])
+      return prompt.select("Welcome back #{name}! What would you like to do?", ["Select a movie", "User options"])
     end
   end
 
@@ -92,7 +92,14 @@ class MovieApp
     puts "What would you like your name to be?"
     updated_name = gets.chomp
     @user.update(name: updated_name)
-
+  
+  elsif users_option == "Delete user" 
+    delete_user_choice = prompt.select("Are you sure you want to Delete your user name?", ["yes", "no"])
+    if delete_user_choice == "yes"
+      @user.destroy
+    else delete_user_choice == "no"
+      #return to the beginning of the app
+    end
   end
 end
 
