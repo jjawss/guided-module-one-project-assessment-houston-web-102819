@@ -1,26 +1,12 @@
 #ActiveRecord::Base.logger = nil
 require_relative '../config/environment'
 
+
 class MovieApp
 
   attr_accessor :prompt, :user, :users_movie, :users_option, :users_choice
   
   @prompt = TTY::Prompt.new
-
-########################################################################################
-#Methods
-########################################################################################
-
-  # def self.check_or_create(name)
-  #   prompt = TTY::Prompt.new
-  #   @user = User.find_by({ name: name })
-  #   if @user == nil
-  #     @user = User.create(name: "#{name}")
-  #     return prompt.select("Hello, #{name}, what would you like to do?", ["Select a movie", "User options"])
-  #   else
-  #     return prompt.select("Welcome back #{name}! What would you like to do?", ["Select a movie", "User options"])
-  #   end
-  # end
 
 
   def self.welcome_frame
@@ -41,28 +27,14 @@ class MovieApp
   end
 
   def self.main_menu
-    response = @prompt.select("Hello, #{name}, what would you like to do?", ["Select a movie", "User options"])
+    response = @prompt.select("Hello, #{name}, what would you like to do?", ["Select a movie", "View my profile"])
     if response == "Select a movie"
       movie_menu
     else
-      list_options
+      profile_menu
     end
   end
 
-  # def self.list_movies
-  #   #logic for listing and selecting movies
-  #   if response != "back"
-  #     #do stuff
-  #   else
-  #     main_menu
-  #   end
-  # end
-
-
-  # def self.main_menu
-  #   @users_choice = nil
-  #   @users_choice = @prompt.select("Welcome back #{@user.name}! What would you like to do?", ["Select a movie", "User options"])
-  # end
 
   def self.movie_titles
     Movie.all.map do |movie|
@@ -72,31 +44,27 @@ class MovieApp
 
   def self.movie_menu
     prompt = TTY::Prompt.new
-    #users_movie_menu_selection = nil
-    users_movie_menu_selection = prompt.select("What movie would you like to see?", [movie_titles, "back"])
-    #movie_object = Movie.where(title: @users_movie)
+    users_movie_menu_selection = prompt.select("What movie would you like to see?", [movie_titles, "Back"])
     @users_movie = users_movie_menu_selection
 
-    if users_movie_menu_selection == "back"
+    if users_movie_menu_selection == "Back"
       main_menu
     else
       location_menu
-      #users_movie_menu_selection
-      #if @users_movie == "back"
-        #main_menu
     end
   end
 
   def self.location_names
     Location.all.map do |location|
       location.name
-    end
+      end
   end
+
 
   def self.location_menu
     #prompt = TTY::Prompt.new
-    users_location = @prompt.select("Select a location", [location_names, "back"])
-    if users_location == "back"
+    users_location = @prompt.select("Select a location", [location_names, "Back"])
+    if users_location == "Back"
       movie_menu
     else
        movie_times(users_location)
@@ -113,18 +81,17 @@ class MovieApp
     tickets_for_movie_location_object.each do |ticket|
       ticket_labels["Time: #{ticket.time} Price: $#{ticket.price}0"] = ticket
     end
-    
-    #users_ticket = @prompt.select("Select a time", ticket_labels)
-    #print_ticket
     movie_time_menu(ticket_labels)
   end
 
   def self.movie_time_menu(labels)
-    labels["Back"] = "back"
+    labels["Back"] = "Back"
     users_ticket = @prompt.select("Select a time", labels)
-    if users_ticket == "back"
+    if users_ticket == "Back"
       location_menu
     else
+      users_ticket.user = @user
+      users_ticket.save
       print_ticket(users_ticket)
     end
   end
@@ -137,111 +104,81 @@ class MovieApp
     prompt = TTY::Prompt.new
     @users_option = prompt.select("User Options", ["Update name", "Delete user"])
   end
+
+   #PROFILE BRANCH------------------------------
+  def self.profile_menu
+    profile_menu_choice = @prompt.select("Welcome to your profile.", ["Update user name", "Delete user", "Favorite Genre", "Favorite Theater", "My Movie List", "BACK"])
+
+    if profile_menu_choice == "Update user name"
+        update_user
+    elsif profile_menu_choice == "Delete user"
+        delete_user
+    elsif profile_menu_choice == "Favorite Genre"
+        favorite_genre
+    elsif profile_menu_choice == "Favorite Theater"
+        most_visited_theater
+    elsif profile_menu_choice == "My Movie List"
+        movies_history
+    elsif profile_menu_choice == "Back"
+        main_menu
+    end
+  end
+
+  def self.update_user
+    puts "What would you like your name to be?"
+    updated_name = gets.chomp
+    @user.update(name: updated_name)
+    puts "Your user name has been updated to #{updated_name}."
+    
+    profile_menu
+  end
+
+  def self.delete_user
+    delete_user_choice = @prompt.select("Are you sure you want to delete your user name?", ["Yes", "No"])
+    if delete_user_choice == "Yes"
+      @user.destroy
+    else delete_user_choice == "No"
+      profile_menu
+    end
+  end
+
+  def self.favorite_genre
+    tickets_user_purchased = Ticket.where(user_id: @user)
+
+    genre_purchased_tickets = tickets_user_purchased.map do |ticket|
+      ticket.movie.genre
+    end
+
+    x = genre_purchased_tickets.max_by {|genre| genre_purchased_tickets.count(genre)}
+    puts "Your favorite genre is: #{x}"
+    
+    profile_menu
+    end
+
+  def self.most_visited_theater
+    tickets_user_purchased = Ticket.where(user_id: @user)
+
+    location_purchased_tickets = tickets_user_purchased.map do |ticket|
+      ticket.location.name
+    end
+
+    x = location_purchased_tickets.max_by {|location| location_purchased_tickets.count(location)}
+    puts "Your most visited theater is: #{x}"
+
+    profile_menu
+  end
+
+  def self.movies_history
+    tickets_user_purchased = Ticket.where(user_id: @user)
+    
+    title_purchased_tickets = tickets_user_purchased.map do |ticket|
+      ticket.movie.title
+    end
+    puts "List of movies you've seen:"
+    puts title_purchased_tickets.uniq
+
+    profile_menu
+  end
   welcome_frame
 end
-########################################################################################
-#USER APP
-########################################################################################
 
-#   if @users_choice == "Select a movie"
-#     movie_menu
-#   else 
-#     options_menu
-#   end
-# end
-  #################
-  #MOVIE MENU PATH#
-  #################
-  # if @users_movie != nil  #SELECT A TICKET PATH
-  #   location_names
-
-  #   users_location = @prompt.select("Select a location", location_names)
-
-
-  #   movie_object = Movie.where(title: @users_movie)
-  #   location_object = Location.where(name: users_location)
-  #   tickets_for_movie_location_object = Ticket.where(movie: movie_object, location: location_object)
-
-  #   ticket_labels = {}
-  #   tickets_for_movie_location_object.each do |ticket|
-  #     ticket_labels["Time: #{ticket.time} Price: $#{ticket.price}"] = ticket
-  #   end
-
-
-  #   users_ticket = @prompt.select("Select a time", ticket_labels)
-
-  #   puts "You're going to #{users_ticket.location.name} to see #{users_ticket.movie.title} at #{users_ticket.time}."
-
-  #   users_ticket.user = @user
-  #   users_ticket.save
-
-
-##############
-#Profile Menu#
-##############
-#   elsif @users_option == "Update name"
-#     puts "What would you like your name to be?"
-#     updated_name = gets.chomp
-#     @user.update(name: updated_name)
-  
-#   elsif @users_option == "Delete user" 
-#     delete_user_choice = @prompt.select("Are you sure you want to Delete your user name?", ["yes", "no"])
-#     if delete_user_choice == "yes"
-#       @user.destroy
-#     else delete_user_choice == "no"
-#       #return to the beginning of the app
-#       welcome_frame
-#     end
-#   end
-# end
-
-
-
-# class View
-
-#   def check_or_create(name)
-#      @@user = User.find_by({ name: name })
-#     if @@user == nil
-#       @@user = User.create(name: "#{name}")
-#     end
-#   end
-
-#   @@all = []
-#   @@prompt = TTY::Prompt.new
-
-#   def initialize(view = 'login')
-#     @view = view
-#     @@all.push(self)
-#   end
-
-#   def run 
-#     if(@view == 'login')
-#       puts "Welcome to Movie App!"
-#       puts "What is your name?"
-#       current_user = gets.chomp
-#       check_or_create(current_user)
-#       View.open('main menu')
-#     elsif(@view == 'main menu')
-#       selection = @@prompt.select("Hello, #{@@user.name}, what would you like to do?", ["Select a movie", "User options", "Back"])
-#       View.open(selection)
-#     elsif(@view == 'Select a movie')
-
-#     elsif(@view == 'User options')
-
-#     elsif(@view == 'Back')
-#       @@all.pop() # Get rid of back
-#       @@all.pop() # Get rid of the most recent view
-#       previous_view = @@all.last 
-#       previous_view.run
-#     end
-#   end
-
-
-#   def self.open(view = 'login')
-#     view = View.new(view)
-#     view.run
-#   end
-
-# end
-
-# View.open()
