@@ -11,10 +11,6 @@ class MovieApp
     @prompt = TTY::Prompt.new
     String.disable_colorization = false
 
-    p String.colors
-    p String.modes
-    p String.color_samples 
-
 
   def self.welcome_frame
     puts @a.asciify(" Welcome").red
@@ -117,25 +113,20 @@ class MovieApp
     end
 
   end
-  
-  def self.options_menu
-    prompt = TTY::Prompt.new
-    @users_option = prompt.select("User Options", ["Update name", "Delete user"])
-  end
 
    #PROFILE BRANCH------------------------------
   def self.profile_menu
-    profile_menu_choice = @prompt.select("Welcome to your profile.", ["Update user name", "Delete user", "Favorite Genre", "Favorite Theater", "My Movie List", "Back".red])
+    profile_menu_choice = @prompt.select("Welcome to your profile.", ["Update profile name", "Delete profile", "Favorite genre", "Favorite theater", "My movie list", "Back".red])
 
-    if profile_menu_choice == "Update user name"
+    if profile_menu_choice == "Update profile name"
         update_user
-    elsif profile_menu_choice == "Delete user"
+    elsif profile_menu_choice == "Delete profile"
         delete_user
-    elsif profile_menu_choice == "Favorite Genre"
+    elsif profile_menu_choice == "Favorite genre"
         favorite_genre
-    elsif profile_menu_choice == "Favorite Theater"
+    elsif profile_menu_choice == "Favorite theater"
         most_visited_theater
-    elsif profile_menu_choice == "My Movie List"
+    elsif profile_menu_choice == "My movie list"
         movies_history
     elsif profile_menu_choice == "Back"
         main_menu
