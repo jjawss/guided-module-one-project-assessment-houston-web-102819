@@ -21,3 +21,5 @@ gem 'pry'
 gem 'tty-prompt'
 gem 'artii'
 gem "rspec", "~> 3.9"
+gem 'fancy_irb'
+gem 'colorize'

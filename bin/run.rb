@@ -1,16 +1,25 @@
-#ActiveRecord::Base.logger = nil
+
 require_relative '../config/environment'
 
 
 class MovieApp
+    ActiveRecord::Base.logger = nil
 
-  attr_accessor :prompt, :user, :users_movie, :users_option, :users_choice
-  
-  @prompt = TTY::Prompt.new
+    attr_accessor :prompt, :user, :users_movie, :users_option, :users_choice, :a
+
+    @a = Artii::Base.new :font => 'slant'
+    @prompt = TTY::Prompt.new
+    String.disable_colorization = false
+
+    p String.colors
+    p String.modes
+    p String.color_samples 
 
 
   def self.welcome_frame
-    puts "Welcome to Movie App!"
+    puts @a.asciify(" Welcome").red
+    puts @a.asciify("         to")
+    puts @a.asciify("Movie App!").red
 
     puts "What is your name?"
     current_user = gets.chomp
@@ -27,7 +36,7 @@ class MovieApp
   end
 
   def self.main_menu
-    response = @prompt.select("Hello, #{name}, what would you like to do?", ["Select a movie", "View my profile"])
+    response = @prompt.select("Hello #{@user.name}, what would you like to do?", ["Select a movie", "View my profile"])
     if response == "Select a movie"
       movie_menu
     else
@@ -44,7 +53,7 @@ class MovieApp
 
   def self.movie_menu
     prompt = TTY::Prompt.new
-    users_movie_menu_selection = prompt.select("What movie would you like to see?", [movie_titles, "Back"])
+    users_movie_menu_selection = prompt.select("What movie would you like to see?", [movie_titles, "Back".red])
     @users_movie = users_movie_menu_selection
 
     if users_movie_menu_selection == "Back"
@@ -63,7 +72,7 @@ class MovieApp
 
   def self.location_menu
     #prompt = TTY::Prompt.new
-    users_location = @prompt.select("Select a location", [location_names, "Back"])
+    users_location = @prompt.select("Select a location", [location_names, "Back".red])
     if users_location == "Back"
       movie_menu
     else
@@ -85,7 +94,7 @@ class MovieApp
   end
 
   def self.movie_time_menu(labels)
-    labels["Back"] = "Back"
+    labels["Back".red] = "Back"
     users_ticket = @prompt.select("Select a time", labels)
     if users_ticket == "Back"
       location_menu
@@ -97,7 +106,16 @@ class MovieApp
   end
 
   def self.print_ticket(users_ticket)
-    puts "You're going to #{users_ticket.location.name} to see #{users_ticket.movie.title} at #{users_ticket.time}."
+    puts "You're going to #{users_ticket.location.name} to see #{users_ticket.movie.title} at #{users_ticket.time}.".yellow
+
+    response = @prompt.select("What would you like to do next?", ["Main menu", "Exit"])
+    
+    if response == "Main menu"
+        main_menu
+    else response == "Exit"
+        exit
+    end
+
   end
   
   def self.options_menu
@@ -107,7 +125,7 @@ class MovieApp
 
    #PROFILE BRANCH------------------------------
   def self.profile_menu
-    profile_menu_choice = @prompt.select("Welcome to your profile.", ["Update user name", "Delete user", "Favorite Genre", "Favorite Theater", "My Movie List", "BACK"])
+    profile_menu_choice = @prompt.select("Welcome to your profile.", ["Update user name", "Delete user", "Favorite Genre", "Favorite Theater", "My Movie List", "Back".red])
 
     if profile_menu_choice == "Update user name"
         update_user
@@ -179,6 +197,13 @@ class MovieApp
 
     profile_menu
   end
+
+  def self.exit
+    puts @a.asciify("Thank you").red
+    puts @a.asciify("for using")
+    puts @a.asciify("Movie App!").red
+  end
+  
   welcome_frame
 end
 
