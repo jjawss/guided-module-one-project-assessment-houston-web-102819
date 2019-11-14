@@ -3,7 +3,7 @@ require_relative '../config/environment'
 
 
 class MovieApp
-
+ActiveRecord::Base.logger = nil
   attr_accessor :prompt, :user, :users_movie, :users_option, :users_choice
   
   @prompt = TTY::Prompt.new
