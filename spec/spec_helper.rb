@@ -14,7 +14,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-require_relative  ../config/environment.rb
+require_relative  '../config/environment.rb'
 
 
 RSpec.configure do |config|
