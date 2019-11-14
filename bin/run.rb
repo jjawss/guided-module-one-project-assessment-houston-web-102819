@@ -95,8 +95,12 @@ class MovieApp
 
   def self.location_menu
     #prompt = TTY::Prompt.new
-    users_location = @prompt.select("Select a location", location_names)
-    movie_times(users_location)
+    users_location = @prompt.select("Select a location", [location_names, "back"])
+    if users_location == "back"
+      movie_menu
+    else
+       movie_times(users_location)
+    end
   end
   
 
@@ -107,7 +111,7 @@ class MovieApp
     
     ticket_labels = {}
     tickets_for_movie_location_object.each do |ticket|
-      ticket_labels["Time: #{ticket.time} Price: $#{ticket.price}"] = ticket
+      ticket_labels["Time: #{ticket.time} Price: $#{ticket.price}0"] = ticket
     end
     
     #users_ticket = @prompt.select("Select a time", ticket_labels)
@@ -116,8 +120,13 @@ class MovieApp
   end
 
   def self.movie_time_menu(labels)
+    labels["Back"] = "back"
     users_ticket = @prompt.select("Select a time", labels)
-    print_ticket(users_ticket)
+    if users_ticket == "back"
+      location_menu
+    else
+      print_ticket(users_ticket)
+    end
   end
 
   def self.print_ticket(users_ticket)
