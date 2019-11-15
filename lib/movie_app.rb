@@ -127,7 +127,7 @@ class MovieApp
         most_visited_theater
     elsif profile_menu_choice == "My movie list"
         movies_history
-    elsif profile_menu_choice == "Back"
+    elsif profile_menu_choice == "Back".red
         main_menu
     end
   end
