@@ -16,7 +16,7 @@ class MovieApp
     puts @a.asciify("         to")
     puts @a.asciify("Movie App!").red
 
-    puts "What is your name?"
+    puts "What is your name?".light_magenta
     current_user = gets.chomp
 
     check_or_create(current_user)
@@ -31,11 +31,13 @@ class MovieApp
   end
 
   def self.main_menu
-    response = @prompt.select("Hello #{@user.name}, what would you like to do?", ["Select a movie", "View my profile"])
+    response = @prompt.select("Hello #{@user.name}, what would you like to do?".magenta, ["Select a movie", "View my profile", "Exit".red])
     if response == "Select a movie"
       movie_menu
-    else
+    elsif response == "View my profile"
       profile_menu
+    else response == "Exit".red
+      exit
     end
   end
 
@@ -48,10 +50,10 @@ class MovieApp
 
   def self.movie_menu
     prompt = TTY::Prompt.new
-    users_movie_menu_selection = prompt.select("What movie would you like to see?", [movie_titles, "Back".red])
+    users_movie_menu_selection = prompt.select("What movie would you like to see?".light_magenta, [movie_titles, "Back".yellow])
     @users_movie = users_movie_menu_selection
 
-    if users_movie_menu_selection == "Back".red
+    if users_movie_menu_selection == "Back".yellow
       main_menu
     else
       location_menu
@@ -67,8 +69,8 @@ class MovieApp
 
   def self.location_menu
     #prompt = TTY::Prompt.new
-    users_location = @prompt.select("Select a location", [location_names, "Back".red])
-    if users_location == "Back".red
+    users_location = @prompt.select("Select a location".magenta, [location_names, "Back".yellow])
+    if users_location == "Back".yellow
       movie_menu
     else
        movie_times(users_location)
@@ -89,8 +91,8 @@ class MovieApp
   end
 
   def self.movie_time_menu(labels)
-    labels["Back".red] = "Back"
-    users_ticket = @prompt.select("Select a time", labels)
+    labels["Back".yellow] = "Back"
+    users_ticket = @prompt.select("Select a time".light_magenta, labels)
     if users_ticket == "Back"
       location_menu
     else
@@ -103,19 +105,20 @@ class MovieApp
   def self.print_ticket(users_ticket)
     puts "You're going to #{users_ticket.location.name} to see #{users_ticket.movie.title} at #{users_ticket.time}.".yellow
 
-    response = @prompt.select("What would you like to do next?", ["Main menu", "Exit"])
+    response = @prompt.select("What would you like to do next?", ["Main menu", "Exit".red])
     
     if response == "Main menu"
         main_menu
-    else response == "Exit"
+    else response == "Exit".red
         exit
     end
 
   end
-
-   #PROFILE BRANCH------------------------------
+################################################
+#--------------#PROFILE BRANCH-----------------#
+################################################
   def self.profile_menu
-    profile_menu_choice = @prompt.select("Welcome to your profile.", ["Update profile name", "Delete profile", "Favorite genre", "Favorite theater", "My movie list", "Back".red])
+    profile_menu_choice = @prompt.select("Welcome to your profile.".light_magenta, ["Update profile name", "Delete profile", "Favorite genre", "Favorite theater", "My movie list", "Back".yellow])
 
     if profile_menu_choice == "Update profile name"
         update_user
@@ -127,7 +130,7 @@ class MovieApp
         most_visited_theater
     elsif profile_menu_choice == "My movie list"
         movies_history
-    elsif profile_menu_choice == "Back".red
+    elsif profile_menu_choice == "Back".yellow
         main_menu
     end
   end
@@ -158,7 +161,7 @@ class MovieApp
     end
 
     x = genre_purchased_tickets.max_by {|genre| genre_purchased_tickets.count(genre)}
-    puts "Your favorite genre is: #{x}"
+    puts "Your favorite genre is: #{x}".yellow
     
     profile_menu
     end
@@ -171,7 +174,7 @@ class MovieApp
     end
 
     x = location_purchased_tickets.max_by {|location| location_purchased_tickets.count(location)}
-    puts "Your most visited theater is: #{x}"
+    puts "Your most visited theater is: #{x}".yellow
 
     profile_menu
   end
@@ -182,7 +185,7 @@ class MovieApp
     title_purchased_tickets = tickets_user_purchased.map do |ticket|
       ticket.movie.title
     end
-    puts "List of movies you've seen:"
+    puts "List of movies you've seen:".yellow
     puts title_purchased_tickets.uniq
 
     profile_menu
